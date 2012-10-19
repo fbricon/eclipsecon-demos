@@ -82,6 +82,12 @@
 			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+                <dependency>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-jaxrs</artifactId>
+                    <version>1.9.2</version>
+                </dependency>
 	</dependencies>
 
 	<build>
