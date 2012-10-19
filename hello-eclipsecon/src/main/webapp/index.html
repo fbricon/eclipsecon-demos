@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Hello World</title>
+</head>
+  <link rel="stylesheet" 	href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+    }
+  </style>
+</head>
+<body>
+	<div id="navbar" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+        	<div class="container">
+			<a class="brand" href="#">Hello EclipseCon</a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<form id="formGreeting" class="well form-inline">
+			<div class="clearfix">
+				<label for="name">What is your name?</label>
+				<div class="input">
+					<input type="text" name="name" id="name" class="input-small" /> 
+					<input type="submit" class="btn btn-primary btn-medium" name="go" id="go" value="Go"/>
+				</div>
+			</div>
+			<p> </p>
+		</form>
+    </div>
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"></script>
+    <script type="text/javascript">
+    $( document ).ready( function() {
+	  //Register an event listener on the submit action
+	  $('#formGreeting').submit(function(event) {
+	      sayHi($('#name').val());
+	      return false;//equivalent to event.preventDefault();
+	  });
+    });
+    
+    function sayHi(name) {
+    	console.log(name)
+    	if (name=='') {
+        	name= "EclipseCon";
+        }
+        //clear existing  msgs
+        $("div.alert").remove();
+        
+        $.ajax({
+            url: 'rest/greetings/'+name,
+            dataType: "json",
+            type: "GET",
+            success: function(data) {
+            	console.log("processed in " + data.elapsed + "ms");
+            	var message = "<strong>"+data.greeting+"</strong>";
+            	if (data.memory != undefined) {
+                	message += "<p>Memory used : "+(data.memory/(1024*1024)).toFixed(2)+" MB</p>";
+                }
+            	$('#formGreeting').append($('<div class="alert alert-success fade in"><a class="close" data-dismiss="alert">×</a><p>'+message+'</p></div>'));
+            },
+            error: function(error) {
+
+            	$('#formGreeting').append($('<div class="alert alert-error fade in"><a class="close" data-dismiss="alert">×</a><span>Unable to call the greeting service </span></div>'));
+            }
+        });
+    }
+    </script>
+</body>
+</html>
