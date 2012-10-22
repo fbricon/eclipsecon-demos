@@ -9,4 +9,5 @@
    <property name="configurationReadOnly">true</property>
   </configuration>
  </container>
+ 
 </arquillian>

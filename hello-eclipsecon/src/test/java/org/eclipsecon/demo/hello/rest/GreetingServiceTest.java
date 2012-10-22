@@ -2,6 +2,7 @@ package org.eclipsecon.demo.hello.rest;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
@@ -14,6 +15,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,6 +27,11 @@ public class GreetingServiceTest {
 		WebArchive war = ShrinkWrap.create(WebArchive.class,
 				"arquillian-rest-demo.war");
 		war.addPackages(true, "org.eclipsecon.demo.hello.rest");
+		File[] libs = Maven.resolver()
+                .loadPomFromFile("pom.xml")
+                .importRuntimeAndTestDependencies()
+                .as(File.class);
+		war.addAsLibraries(libs);
 		return war;
 	}
 
